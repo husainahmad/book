@@ -6,6 +6,8 @@ import com.ahmad.book.infrastructure.persistence.mybatis.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class MemberRepositoryAdapter implements MemberRepositoryPort {
@@ -13,13 +15,24 @@ public class MemberRepositoryAdapter implements MemberRepositoryPort {
     private final MemberMapper memberMapper;
 
     @Override
-    public void save(Member member) {
+    public Member save(Member member) {
         memberMapper.insert(member);
+        return member;
     }
 
     @Override
     public Member findById(Long id) {
         return memberMapper.selectById(id);
+    }
+
+    @Override
+    public Member findByEmail(String email) {
+        return memberMapper.selectByEmail(email);
+    }
+
+    @Override
+    public List<Member> findAll() {
+        return memberMapper.selectAll();
     }
 
     @Override

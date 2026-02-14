@@ -2,10 +2,11 @@ package com.ahmad.book.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 
 @Data
@@ -16,8 +17,12 @@ public class Book {
     private String title;
     private String author;
     private String isbn;
+    @JsonProperty("total_copies")
     private int totalCopies;
+    @JsonProperty("available_copies")
     private int availableCopies;
-    private Date createdAt;
-    private Date updatedAt;
+    @JsonProperty("created_at")
+    private LocalDateTime createdAt;
+    @JsonProperty("updated_at")
+    private LocalDateTime updatedAt;
 }

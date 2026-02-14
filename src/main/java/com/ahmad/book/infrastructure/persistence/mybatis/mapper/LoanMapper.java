@@ -3,26 +3,45 @@ package com.ahmad.book.infrastructure.persistence.mybatis.mapper;
 import com.ahmad.book.domain.Loan;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 @Mapper
 public interface LoanMapper {
 
-    @Insert("INSERT INTO loans (member_id, book_id, loan_date, return_date) " +
-            "VALUES (#{memberId}, #{bookId}, #{loanDate}, #{returnDate})")
-    int insert(Loan loan);
+    @Insert("INSERT INTO loans (member_id, book_id, borrowed_at, due_date, returned_at) " +
+            "VALUES (#{memberId}, #{bookId}, #{borrowedAt}, #{dueDate}, #{returnedAt})")
+    @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Long.class)
+    void insert(Loan loan);
 
-    @Select("SELECT id, member_id AS memberId, book_id AS bookId, loan_date AS loanDate, return_date AS returnDate " +
+    @Select("SELECT id, member_id AS memberId, book_id AS bookId, borrowed_at as borrowedAt, due_date as dueDate, returned_at as returnedAt " +
             "FROM loans WHERE id = #{id}")
     @Results(id = "LoanResultMap",
             value = {
                     @Result(property = "id", column = "id"),
-                    @Result(property = "memberId", column = "member_id"),
-                    @Result(property = "bookId", column = "book_id"),
-                    @Result(property = "loanDate", column = "loan_date"),
-                    @Result(property = "returnDate", column = "return_date")
+                    @Result(property = "memberId", column = "memberId"),
+                    @Result(property = "bookId", column = "bookId"),
+                    @Result(property = "borrowedAt", column = "borrowedAt"),
+                    @Result(property = "dueDate", column = "dueDate"),
+                    @Result(property = "returnedAt", column = "returnedAt")
             })
     Loan selectById(Long id);
 
-    @Update("UPDATE loans SET member_id = #{memberId}, book_id = #{bookId}, loan_date = #{loanDate}, " +
-            "return_date = #{returnDate} WHERE id = #{id}")
+    @Select("SELECT id, member_id AS memberId, book_id AS bookId, borrowed_at as borrowedAt, due_date as dueDate, returned_at as returnedAt " +
+            "FROM loans")
+    @ResultMap("LoanResultMap")
+    List<Loan> selectAll();
+
+    @Select("SELECT id, member_id AS memberId, book_id AS bookId, borrowed_at as borrowedAt, due_date as dueDate, returned_at as returnedAt  " +
+            "FROM loans WHERE member_id = #{memberId} AND returned_at IS NULL")
+    @ResultMap("LoanResultMap")
+    List<Loan> selectActiveByMemberId(Long memberId);
+
+    @Select("SELECT id, member_id AS memberId, book_id AS bookId, borrowed_at as borrowedAt, due_date as dueDate, returned_at as returnedAt  " +
+            "FROM loans WHERE member_id = #{memberId} AND returned_at < NOW()")
+    @ResultMap("LoanResultMap")
+    List<Loan> selectOverdueByMemberId(Long memberId);
+
+    @Update("UPDATE loans SET member_id = #{memberId}, book_id = #{bookId}, borrowed_at = #{borrowedAt}, " +
+            "returned_at = #{returnedAt} WHERE id = #{id}")
     void update(Loan loan);
 }

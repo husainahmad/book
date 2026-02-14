@@ -2,8 +2,12 @@ package com.ahmad.book.application.port.out;
 
 import com.ahmad.book.domain.Member;
 
+import java.util.List;
+
 public interface MemberRepositoryPort {
-    void save(Member member);
+    Member save(Member member);
     Member findById(Long id);
+    Member findByEmail(String email);
+    List<Member> findAll();
     void update(Member member);
 }

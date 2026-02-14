@@ -1,22 +1,16 @@
 package com.ahmad.book.infrastructure.web.dto;
 
-import com.ahmad.book.domain.Loan;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 public class LoanRequest {
-    private Long bookId;
-    private Long memberId;
-    private Date borrowedAt;
-    private Date dueDate;
 
-    Loan toLoan() {
-        return new Loan()
-                .setBookId(bookId)
-                .setMemberId(memberId)
-                .setBorrowedAt(borrowedAt)
-                .setDueDate(dueDate);
-    }
+    @NotNull(message = "book.loan.bookId.required")
+    @JsonProperty("book_id")
+    private Long bookId;
+    @NotNull(message = "book.loan.memberId.required")
+    @JsonProperty("member_id")
+    private Long memberId;
 }
