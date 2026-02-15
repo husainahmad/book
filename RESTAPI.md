@@ -1,5 +1,3 @@
----
-
 # REST API Documentation
 
 Base URL:
