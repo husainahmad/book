@@ -14,8 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BookServiceTest {
@@ -78,7 +77,7 @@ class BookServiceTest {
         assertEquals(book.getTotalCopies(), foundBook.getTotalCopies());
         assertEquals(book.getAvailableCopies(), foundBook.getAvailableCopies());
 
-        verify(bookRepositoryPort).findById(book.getId());
+        verify(bookRepositoryPort, times(2)).findById(book.getId());
     }
 
     @Test

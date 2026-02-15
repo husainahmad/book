@@ -92,8 +92,8 @@ class LoanControllerTest {
         mockMvc.perform(post("/api/loans")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(loanRequest)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("Book is not available for loan."));
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Book not found!"));
     }
 
     @Test
