@@ -4,6 +4,7 @@ import com.ahmad.book.application.port.in.BookServicePort;
 import com.ahmad.book.application.port.out.BookRepositoryPort;
 import com.ahmad.book.domain.Book;
 import com.ahmad.book.domain.exception.AlreadyExistException;
+import com.ahmad.book.domain.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,9 @@ public class BookService implements BookServicePort {
 
     @Override
     public Book getBookById(Long id) {
+        if (bookRepositoryPort.findById(id) == null) {
+            throw new NotFoundException("exception.book.notFound", null);
+        }
         return bookRepositoryPort.findById(id);
     }
 
