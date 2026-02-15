@@ -26,4 +26,6 @@ public class Loan {
     private LocalDateTime createdAt;
     @JsonProperty("updated_at")
     private LocalDateTime updatedAt;
+    private Book book;
+    private Member member;
 }

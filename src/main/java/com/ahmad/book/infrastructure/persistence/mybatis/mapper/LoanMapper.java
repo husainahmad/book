@@ -14,8 +14,12 @@ public interface LoanMapper {
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Long.class)
     void insert(Loan loan);
 
-    @Select("SELECT id, member_id AS memberId, book_id AS bookId, borrowed_at as borrowedAt, due_date as dueDate, returned_at as returnedAt " +
-            "FROM loans WHERE id = #{id}")
+    @Select("SELECT l.id, l.member_id AS memberId, l.book_id AS bookId, l.borrowed_at as borrowedAt, l.due_date as dueDate, l.returned_at as returnedAt, " +
+            "b.title, b.author, b.isbn, m.name, m.email " +
+            "FROM loans l " +
+            "JOIN books b ON l.book_id = b.id " +
+            "JOIN members m ON l.member_id = m.id " +
+            "WHERE l.id = #{id}")
     @Results(id = "LoanResultMap",
             value = {
                     @Result(property = "id", column = "id"),
@@ -23,17 +27,31 @@ public interface LoanMapper {
                     @Result(property = "bookId", column = "bookId"),
                     @Result(property = "borrowedAt", column = "borrowedAt"),
                     @Result(property = "dueDate", column = "dueDate"),
-                    @Result(property = "returnedAt", column = "returnedAt")
+                    @Result(property = "returnedAt", column = "returnedAt"),
+
+                    @Result(property = "book.title", column = "title"),
+                    @Result(property = "book.author", column = "author"),
+                    @Result(property = "book.isbn", column = "isbn"),
+
+                    @Result(property = "member.name", column = "name"),
+                    @Result(property = "member.email", column = "email")
             })
     Loan selectById(Long id);
 
-    @Select("SELECT id, member_id AS memberId, book_id AS bookId, borrowed_at as borrowedAt, due_date as dueDate, returned_at as returnedAt " +
-            "FROM loans WHERE id = #{id} AND book_id = #{bookId} AND member_id = #{memberId}")
+    @Select("SELECT l.id, l.member_id AS memberId, l.book_id AS bookId, l.borrowed_at as borrowedAt, l.due_date as dueDate, l.returned_at as returnedAt, " +
+            "b.title, b.author, b.isbn, m.name, m.email " +
+            "FROM loans l " +
+            "JOIN books b ON l.book_id = b.id " +
+            "JOIN members m ON l.member_id = m.id " +
+            "WHERE l.id = #{id} AND l.book_id = #{bookId} AND l.member_id = #{memberId}")
     @ResultMap("LoanResultMap")
     Loan selectByIdBookIdMemberId(Long id, Long bookId, Long memberId);
 
-    @Select("SELECT id, member_id AS memberId, book_id AS bookId, borrowed_at as borrowedAt, due_date as dueDate, returned_at as returnedAt " +
-            "FROM loans")
+    @Select("SELECT l.id, l.member_id AS memberId, l.book_id AS bookId, l.borrowed_at as borrowedAt, l.due_date as dueDate, l.returned_at as returnedAt, " +
+            "b.title, b.author, b.isbn, m.name, m.email " +
+            "FROM loans l " +
+            "JOIN members m ON l.member_id = m.id " +
+            "JOIN books b ON l.book_id = b.id ")
     @ResultMap("LoanResultMap")
     List<Loan> selectAll();
 

@@ -54,7 +54,9 @@ public class LoanService implements LoanServicePort {
 
         Loan loan = new Loan()
                 .setBookId(bookId)
+                .setBook(book)
                 .setMemberId(memberId)
+                .setMember(member)
                 .setBorrowedAt(LocalDateTime.now())
                 .setDueDate(loanMaxDuration);
 
