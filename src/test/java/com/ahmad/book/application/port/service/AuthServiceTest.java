@@ -4,6 +4,7 @@ import com.ahmad.book.application.port.out.JwtTokenPort;
 import com.ahmad.book.application.port.out.SecurityConfigPort;
 import com.ahmad.book.application.service.AuthService;
 import com.ahmad.book.domain.User;
+import com.ahmad.book.domain.exception.UnAuthorizedRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,8 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -50,5 +50,18 @@ class AuthServiceTest {
         assertNotNull(token);
         assertEquals("token", token);
 
+    }
+
+    @Test
+    void login_ShouldThrowException_WhenCredentialsAreInvalid() {
+        // Given
+        when(securityConfigPort.getConfiguredUser()).thenReturn(user);
+
+        // When & Then
+        UnAuthorizedRequestException exception = assertThrows(UnAuthorizedRequestException.class, () ->
+                authService.login("admin", "wrong-password")
+        );
+
+        assertEquals("exception.auth.username.password.notFound", exception.getMessage());
     }
 }
