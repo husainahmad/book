@@ -40,6 +40,16 @@ management.endpoint.health.show-details=always
 
 springdoc.api-docs.path=/v3/api-docs
 springdoc.swagger-ui.path=/swagger-ui.html
+
+# Default log level
+logging.level.root=INFO
+
+# Override for app package
+logging.level.com.ahmad.book=DEBUG
+logging.level.org.springframework=WARN
+
+# Log file location
+logging.file.name=logs/book-loan-api.log
 ```
 ---
 
