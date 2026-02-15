@@ -1,5 +1,5 @@
 package com.ahmad.book.application.port.in;
 
-public interface LoginServicePort {
+public interface AuthServicePort {
     String login(String username, String password);
 }

@@ -1,6 +1,6 @@
 package com.ahmad.book.application.service;
 
-import com.ahmad.book.application.port.in.LoginServicePort;
+import com.ahmad.book.application.port.in.AuthServicePort;
 import com.ahmad.book.application.port.out.JwtTokenPort;
 import com.ahmad.book.application.port.out.SecurityConfigPort;
 import com.ahmad.book.domain.exception.UnAuthorizedRequestException;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class LoginService implements LoginServicePort {
+public class AuthService implements AuthServicePort {
 
     private final SecurityConfigPort securityConfigPort;
     private final JwtTokenPort jwtTokenPort;

@@ -4,6 +4,7 @@ import com.ahmad.book.application.port.in.LoanServicePort;
 import com.ahmad.book.application.port.in.MemberServicePort;
 import com.ahmad.book.application.port.out.BookRepositoryPort;
 import com.ahmad.book.application.port.out.LoanRepositoryPort;
+import com.ahmad.book.application.port.out.MemberRepositoryPort;
 import com.ahmad.book.domain.Book;
 import com.ahmad.book.domain.Loan;
 import com.ahmad.book.domain.Member;
@@ -22,7 +23,7 @@ public class LoanService implements LoanServicePort {
 
     private final LoanRepositoryPort loanRepositoryPort;
     private final BookRepositoryPort bookRepositoryPort;
-    private final MemberServicePort memberServicePort;
+    private final MemberRepositoryPort memberRepositoryPort;
 
     private final LoanConfigProperties loanConfigProperties;
 
@@ -33,24 +34,29 @@ public class LoanService implements LoanServicePort {
             throw new NotFoundException("exception.book.notFound", null);
         }
 
-        Member member = memberServicePort.getMemberById(memberId);
+        Member member = memberRepositoryPort.findById(memberId);
         if (member == null) {
             throw new NotFoundException("exception.member.notFound", null);
         }
 
+        // Check for active loans
         if (loanRepositoryPort.findActiveByMemberId(memberId).size() > loanConfigProperties.getMaxActive()) {
             throw new StateException("exception.loan.maxLoansReached", null);
         }
 
-        if (!loanRepositoryPort.findOverdueByMemberId(memberId).isEmpty()) {
+        // Check for overdue loans
+        if (!loanRepositoryPort.findOverdueByMemberId(memberId, LocalDateTime.now()).isEmpty()) {
             throw new StateException("exception.loan.overdueExists", null);
         }
+
+        // Loan Duration (now + duration config)
+        LocalDateTime loanMaxDuration = LocalDateTime.now().plusDays(loanConfigProperties.getDueDate());
 
         Loan loan = new Loan()
                 .setBookId(bookId)
                 .setMemberId(memberId)
                 .setBorrowedAt(LocalDateTime.now())
-                .setDueDate(LocalDateTime.now().plusDays(loanConfigProperties.getDueDate()));
+                .setDueDate(loanMaxDuration);
 
         return loanRepositoryPort.save(loan);
     }

@@ -42,8 +42,8 @@ public class LoanRepositoryAdapter implements LoanRepositoryPort {
     }
 
     @Override
-    public List<Loan> findOverdueByMemberId(Long memberId) {
-        return loanMapper.selectOverdueByMemberId(memberId);
+    public List<Loan> findOverdueByMemberId(Long memberId, LocalDateTime now) {
+        return loanMapper.selectOverdueByMemberId(memberId, now);
     }
 
     @Override

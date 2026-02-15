@@ -43,9 +43,9 @@ public interface LoanMapper {
     List<Loan> selectActiveByMemberId(Long memberId);
 
     @Select("SELECT id, member_id AS memberId, book_id AS bookId, borrowed_at as borrowedAt, due_date as dueDate, returned_at as returnedAt  " +
-            "FROM loans WHERE member_id = #{memberId} AND returned_at < NOW()")
+            "FROM loans WHERE member_id = #{memberId} AND due_date < #{now} AND returned_at IS NULL")
     @ResultMap("LoanResultMap")
-    List<Loan> selectOverdueByMemberId(Long memberId);
+    List<Loan> selectOverdueByMemberId(Long memberId, LocalDateTime now);
 
     @Update("UPDATE loans SET member_id = #{memberId}, book_id = #{bookId}, borrowed_at = #{borrowedAt}, " +
             "returned_at = #{returnedAt} WHERE id = #{id}")

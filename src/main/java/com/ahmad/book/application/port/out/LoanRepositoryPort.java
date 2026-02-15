@@ -11,7 +11,7 @@ public interface LoanRepositoryPort {
     Loan findByIdBookIdMemberId(Long id, Long bookId, Long memberId);
     List<Loan> findAll();
     List<Loan> findActiveByMemberId(Long memberId);
-    List<Loan> findOverdueByMemberId(Long memberId);
+    List<Loan> findOverdueByMemberId(Long memberId, LocalDateTime now);
     void update(Loan loan);
     void updateReturnedAt(Long id, LocalDateTime returnedAt);
 
