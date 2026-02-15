@@ -5,7 +5,7 @@ import com.ahmad.book.domain.Loan;
 import java.util.List;
 
 public interface LoanServicePort {
-    Loan loanBook(long bookId, long memberId);
-    void returnBook(long bookId, long memberId);
+    Loan loanBook(Long bookId, Long memberId);
+    Loan returnBook(Long id, Long bookId, Long memberId);
     List<Loan> getAllLoans();
 }

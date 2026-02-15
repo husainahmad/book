@@ -6,6 +6,7 @@ import com.ahmad.book.infrastructure.persistence.mybatis.mapper.LoanMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -26,6 +27,11 @@ public class LoanRepositoryAdapter implements LoanRepositoryPort {
     }
 
     @Override
+    public Loan findByIdBookIdMemberId(Long id, Long bookId, Long memberId) {
+        return loanMapper.selectByIdBookIdMemberId(id, bookId, memberId);
+    }
+
+    @Override
     public List<Loan> findAll() {
         return loanMapper.selectAll();
     }
@@ -43,5 +49,10 @@ public class LoanRepositoryAdapter implements LoanRepositoryPort {
     @Override
     public void update(Loan loan) {
         loanMapper.update(loan);
+    }
+
+    @Override
+    public void updateReturnedAt(Long id, LocalDateTime returnedAt) {
+        loanMapper.updateReturnedAt(id, returnedAt);
     }
 }

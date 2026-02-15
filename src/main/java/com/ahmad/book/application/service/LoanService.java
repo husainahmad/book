@@ -27,7 +27,7 @@ public class LoanService implements LoanServicePort {
     private final LoanConfigProperties loanConfigProperties;
 
     @Override
-    public Loan loanBook(long bookId, long memberId) {
+    public Loan loanBook(Long bookId, Long memberId) {
         Book book = bookRepositoryPort.findById(bookId);
         if (book == null) {
             throw new NotFoundException("exception.book.notFound", null);
@@ -56,8 +56,20 @@ public class LoanService implements LoanServicePort {
     }
 
     @Override
-    public void returnBook(long bookId, long memberId) {
+    public Loan returnBook(Long id, Long bookId, Long memberId) {
+        Loan loan = loanRepositoryPort.findById(id);
+        if (loan == null) {
+            throw new NotFoundException("exception.loan.notFound", null);
+        }
 
+        if (loanRepositoryPort.findByIdBookIdMemberId(id, bookId, memberId) == null) {
+            throw new StateException("exception.loan.invalidReturn", null);
+        }
+
+        loan.setReturnedAt(LocalDateTime.now());
+        loanRepositoryPort.updateReturnedAt(loan.getId(), loan.getReturnedAt());
+
+        return loan;
     }
 
     @Override
