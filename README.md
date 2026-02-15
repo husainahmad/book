@@ -87,6 +87,10 @@ http://localhost:8080/swagger-ui.html
 
 ---
 
+### Reference Documentation
+- [REST API Documentation](RESTAPI.md)
+- [DB Schema] : db/schema_database.sql
+
 ## Author
 
 Ahmad Husain

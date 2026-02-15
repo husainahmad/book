@@ -107,7 +107,7 @@ curl --location 'http://localhost:8080/api/books' \
 ### Endpoint
 
 ```
-GET /api/books/{bookId}
+GET /api/books/{id}
 ```
 
 ### cURL
