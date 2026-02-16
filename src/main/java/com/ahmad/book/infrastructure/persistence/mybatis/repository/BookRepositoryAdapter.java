@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -20,13 +21,13 @@ public class BookRepositoryAdapter implements BookRepositoryPort {
     }
 
     @Override
-    public Book findById(Long id) {
-        return bookMapper.selectById(id);
+    public Optional<Book> findById(Long id) {
+        return Optional.ofNullable(bookMapper.selectById(id));
     }
 
     @Override
-    public Book findByIsbn(String isbn) {
-        return bookMapper.selectByIsbn(isbn);
+    public Optional<Book> findByIsbn(String isbn) {
+        return Optional.ofNullable(bookMapper.selectByIsbn(isbn));
     }
 
     @Override

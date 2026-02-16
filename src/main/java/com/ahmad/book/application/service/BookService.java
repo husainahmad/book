@@ -18,18 +18,16 @@ public class BookService implements BookServicePort {
 
     @Override
     public Book createBook(Book book) {
-        if (bookRepositoryPort.findByIsbn(book.getIsbn()) != null) {
+        bookRepositoryPort.findByIsbn(book.getIsbn()).ifPresent(existingBook -> {
             throw new AlreadyExistException("exception.book.isbn.alreadyExists", null);
-        }
+        });
         return bookRepositoryPort.save(book);
     }
 
     @Override
     public Book getBookById(Long id) {
-        if (bookRepositoryPort.findById(id) == null) {
-            throw new NotFoundException("exception.book.notFound", null);
-        }
-        return bookRepositoryPort.findById(id);
+        return bookRepositoryPort.findById(id).orElseThrow(() ->
+                new NotFoundException("exception.book.notFound", null));
     }
 
     @Override

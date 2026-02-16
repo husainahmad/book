@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,13 +22,13 @@ public class MemberRepositoryAdapter implements MemberRepositoryPort {
     }
 
     @Override
-    public Member findById(Long id) {
-        return memberMapper.selectById(id);
+    public Optional<Member> findById(Long id) {
+        return Optional.ofNullable(memberMapper.selectById(id));
     }
 
     @Override
-    public Member findByEmail(String email) {
-        return memberMapper.selectByEmail(email);
+    public Optional<Member> findByEmail(String email) {
+        return Optional.ofNullable(memberMapper.selectByEmail(email));
     }
 
     @Override

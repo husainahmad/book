@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -79,7 +80,8 @@ class LoanServiceTest {
     @Test
     void loanBook_ShouldThrowNotFoundException_WhenBookNotFound() {
         // Given
-        when(bookRepositoryPort.findById(book.getId())).thenReturn(null);
+        when(bookRepositoryPort.findById(book.getId()))
+                .thenReturn(Optional.empty());
 
         // When & Then
         NotFoundException exception = assertThrows(NotFoundException.class, () ->
@@ -92,8 +94,8 @@ class LoanServiceTest {
     @Test
     void loanBook_ShouldThrowNotFoundException_WhenMemberNotFound() {
         // Given
-        when(bookRepositoryPort.findById(book.getId())).thenReturn(book);
-        when(memberRepositoryPort.findById(member.getId())).thenReturn(null);
+        when(bookRepositoryPort.findById(book.getId())).thenReturn(Optional.ofNullable(book));
+        when(memberRepositoryPort.findById(member.getId())).thenReturn(Optional.empty());
 
         // When & Then
         NotFoundException exception = assertThrows(NotFoundException.class, () ->
@@ -105,8 +107,8 @@ class LoanServiceTest {
     @Test
     void loanBook_ShouldThrowMaxLoansReachedException_WhenMemberReachMaxActive() {
         // Given
-        when(bookRepositoryPort.findById(book.getId())).thenReturn(book);
-        when(memberRepositoryPort.findById(member.getId())).thenReturn(member);
+        when(bookRepositoryPort.findById(book.getId())).thenReturn(Optional.ofNullable(book));
+        when(memberRepositoryPort.findById(member.getId())).thenReturn(Optional.ofNullable(member));
 
         List<Loan> activeLoans = List.of(
                 new Loan(), new Loan(), new Loan(), new Loan(), new Loan(), new Loan()
@@ -125,8 +127,8 @@ class LoanServiceTest {
     @Test
     void loanBook_ShouldThrowOverdueExistsException_WhenMemberHasOverdue() {
         // Given
-        when(bookRepositoryPort.findById(book.getId())).thenReturn(book);
-        when(memberRepositoryPort.findById(member.getId())).thenReturn(member);
+        when(bookRepositoryPort.findById(book.getId())).thenReturn(Optional.ofNullable(book));
+        when(memberRepositoryPort.findById(member.getId())).thenReturn(Optional.ofNullable(member));
         when(loanRepositoryPort.findActiveByMemberId(eq(member.getId()))).thenReturn(List.of(loan));
         when(loanRepositoryPort.findOverdueByMemberId(eq(member.getId()), any(LocalDateTime.class))).thenReturn(List.of(loan));
 
@@ -142,8 +144,8 @@ class LoanServiceTest {
     @Test
     void loanBook_ShouldReturnLoan() {
         // Given
-        when(bookRepositoryPort.findById(book.getId())).thenReturn(book);
-        when(memberRepositoryPort.findById(member.getId())).thenReturn(member);
+        when(bookRepositoryPort.findById(book.getId())).thenReturn(Optional.ofNullable(book));
+        when(memberRepositoryPort.findById(member.getId())).thenReturn(Optional.ofNullable(member));
         when(loanRepositoryPort.findActiveByMemberId(eq(member.getId()))).thenReturn(List.of());
         when(loanRepositoryPort.findOverdueByMemberId(eq(member.getId()), any(LocalDateTime.class))).thenReturn(List.of());
         when(loanRepositoryPort.save(any(Loan.class)))

@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -40,7 +41,7 @@ class MemberServiceTest {
     @Test
     void createMember_ShouldReturnCreatedMember() {
         // Given
-        when(memberRepositoryPort.findByEmail(member.getEmail())).thenReturn(null);
+        when(memberRepositoryPort.findByEmail(member.getEmail())).thenReturn(Optional.empty());
         when(memberRepositoryPort.save(member)).thenReturn(member);
 
         // When
@@ -59,7 +60,7 @@ class MemberServiceTest {
     @Test
     void getMemberById_ShouldReturnMember() {
         // Given
-        when(memberRepositoryPort.findById(member.getId())).thenReturn(member);
+        when(memberRepositoryPort.findById(member.getId())).thenReturn(Optional.ofNullable(member));
 
         // When
         Member foundMember = memberService.getMemberById(member.getId());

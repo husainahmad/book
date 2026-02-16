@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -22,13 +23,13 @@ public class LoanRepositoryAdapter implements LoanRepositoryPort {
     }
 
     @Override
-    public Loan findById(Long id) {
-        return loanMapper.selectById(id);
+    public Optional<Loan> findById(Long id) {
+        return Optional.ofNullable(loanMapper.selectById(id));
     }
 
     @Override
-    public Loan findByIdBookIdMemberId(Long id, Long bookId, Long memberId) {
-        return loanMapper.selectByIdBookIdMemberId(id, bookId, memberId);
+    public Optional<Loan> findByIdBookIdMemberId(Long id, Long bookId, Long memberId) {
+        return Optional.ofNullable(loanMapper.selectByIdBookIdMemberId(id, bookId, memberId));
     }
 
     @Override

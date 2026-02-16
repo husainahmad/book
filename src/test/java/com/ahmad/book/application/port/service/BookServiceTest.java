@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -41,7 +42,7 @@ class BookServiceTest {
     @Test
     void createBook_ShouldReturnCreatedBook() {
         // Given
-        when(bookRepositoryPort.findByIsbn(book.getIsbn())).thenReturn(null);
+        when(bookRepositoryPort.findByIsbn(book.getIsbn())).thenReturn(Optional.empty());
         when(bookRepositoryPort.save(book)).thenReturn(book);
 
         // When
@@ -63,7 +64,7 @@ class BookServiceTest {
     @Test
     void getBookById_ShouldReturnBook() {
         // Given
-        when(bookRepositoryPort.findById(book.getId())).thenReturn(book);
+        when(bookRepositoryPort.findById(book.getId())).thenReturn(Optional.ofNullable(book));
 
         // When
         Book foundBook = bookService.getBookById(book.getId());
@@ -76,8 +77,6 @@ class BookServiceTest {
         assertEquals(book.getIsbn(), foundBook.getIsbn());
         assertEquals(book.getTotalCopies(), foundBook.getTotalCopies());
         assertEquals(book.getAvailableCopies(), foundBook.getAvailableCopies());
-
-        verify(bookRepositoryPort, times(2)).findById(book.getId());
     }
 
     @Test
