@@ -3,6 +3,7 @@ package com.ahmad.book.infrastructure.web;
 import com.ahmad.book.application.service.AuthService;
 import com.ahmad.book.infrastructure.web.dto.CommonResponse;
 import com.ahmad.book.infrastructure.web.dto.LoginRequest;
+import com.ahmad.book.infrastructure.web.dto.LoginResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -22,8 +23,11 @@ public class LoginController {
     @PostMapping
     @Operation(summary = "Authenticate user and obtain JWT token", description = "Authenticates the user with the provided username and password, and returns a JWT token if the credentials are valid.")
     public ResponseEntity<CommonResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setToken(authService.login(loginRequest.getUsername(), loginRequest.getPassword()));
+
         return new ResponseEntity<>(CommonResponse.builder()
-                .data(authService.login(loginRequest.getUsername(), loginRequest.getPassword()))
+                .data(loginResponse)
                 .build(), HttpStatus.OK);
     }
 

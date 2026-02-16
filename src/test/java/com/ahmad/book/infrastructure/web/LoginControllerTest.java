@@ -45,7 +45,7 @@ class LoginControllerTest {
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data").value(token));
+                .andExpect(jsonPath("$.data.token").value(token));
 
     }
 

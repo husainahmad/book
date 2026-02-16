@@ -33,9 +33,9 @@ curl --location 'http://localhost:8080/auth/login' \
 
 ```json
 {
-  "timeStamp": 1771090758026,
+  "timeStamp": 1771255890401,
   "data": {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc3MTI1NTg5MCwicm9sZXMiOiJBRE1JTiIsImV4cCI6MTc3MTM0MjI5MH0.UxpdAg6dvJgil5jIIU9uD21XB_qPDtPfQhNoTnj_dLI18bXyfWhJhEnklM3sS0rYXz4DVryrUl5qDrVqmdLR_Q"
   }
 }
 ```
